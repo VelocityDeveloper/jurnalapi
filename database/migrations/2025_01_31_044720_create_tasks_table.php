@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description')->nullable();
-            $table->date('start');
-            $table->date('end')->nullable();
+            $table->longText('description')->nullable();
+            $table->timestamp('start');
+            $table->timestamp('end')->nullable();
             $table->enum('status', ['ongoing', 'completed', 'cancelled', 'archived'])->default('ongoing');
             $table->string('category')->nullable();
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
