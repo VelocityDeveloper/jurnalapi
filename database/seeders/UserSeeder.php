@@ -26,11 +26,15 @@ class UserSeeder extends Seeder
             'password'  => Hash::make('password'),
             'role'      => 'admin',
         ]);
-        User::factory()->create([
-            'name'      => 'Web Developer',
-            'email'     => 'webdeveloper@example.com',
-            'password'  => Hash::make('password'),
-            'role'      => 'webdeveloper',
-        ]);
+
+        //buat web developer 4
+        for ($i = 1; $i <= 4; $i++) {
+            User::factory()->create([
+                'name'      => 'Web Developer ' . $i,
+                'email'     => 'webdeveloper' . $i . '@example.com',
+                'password'  => Hash::make('password'),
+                'role'      => 'webdeveloper',
+            ]);
+        }
     }
 }
