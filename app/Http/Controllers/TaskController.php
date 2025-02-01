@@ -15,7 +15,7 @@ class TaskController extends Controller
 
         // Ambil parameter dari request
         $user_id    = $request->input('user_id');
-        $date       = $request->input('date');
+        $date       = $request->input('date') ?: date('Y-m');
 
         $query = Task::query();
 
@@ -24,8 +24,10 @@ class TaskController extends Controller
         }
 
         if ($date) {
-            $query->whereDate('start', $date);
+            $query->whereMonth('start', now()->month);
         }
+
+        $query->orderBy('start', 'asc');
 
         $tasks = $query->get();
 

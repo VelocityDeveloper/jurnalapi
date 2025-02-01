@@ -24,7 +24,7 @@ class TaskSeeder extends Seeder
             for ($i = -30; $i <= 30; $i++) {
 
                 // Hitung tanggal 30 hari kebelakang
-                $date = Carbon::today()->subDays($i);
+                $date = Carbon::today()->addDays($i);
 
                 // Tentukan jumlah task untuk hari tersebut (antara 5 hingga 10 task)
                 $taskCount = rand(5, 10);
