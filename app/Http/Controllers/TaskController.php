@@ -37,7 +37,25 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'title'         => 'required',
+            'description'   => 'required',
+            'start'         => 'required',
+            'end'           => 'required',
+            'status'        => 'required',
+            'category'      => 'required',
+            'priority'      => 'required',
+        ]);
+        $user = $request->user();
+        $validate['user_id'] = $user->id;
+
+        //format tanggal
+        $validate['start'] = date('Y-m-d H:i:s', strtotime($validate['start']));
+        $validate['end'] = date('Y-m-d H:i:s', strtotime($validate['end']));
+
+        $task = Task::create($validate);
+
+        return response()->json($task);
     }
 
     /**
@@ -45,7 +63,10 @@ class TaskController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //dapatkan task
+        $task = Task::find($id);
+
+        return response()->json($task);
     }
 
     /**
@@ -53,7 +74,24 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validate = $request->validate([
+            'title'         => 'required',
+            'description'   => 'required',
+            'start'         => 'required',
+            'end'           => 'required',
+            'status'        => 'required',
+            'category'      => 'required',
+            'priority'      => 'required',
+        ]);
+        $task = Task::find($id);
+
+        //format tanggal
+        $validate['start'] = date('Y-m-d H:i:s', strtotime($validate['start']));
+        $validate['end'] = date('Y-m-d H:i:s', strtotime($validate['end']));
+
+        $task->update($validate);
+
+        return response()->json($task);
     }
 
     /**
@@ -61,6 +99,8 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //hapus task
+        $task = Task::find($id);
+        $task->delete();
     }
 }
