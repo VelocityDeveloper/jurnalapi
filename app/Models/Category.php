@@ -12,6 +12,12 @@ class Category extends Model
         'name',
     ];
 
+    //sembunyikan
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
     protected static function boot()
     {
         parent::boot();
