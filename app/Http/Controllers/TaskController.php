@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Task;
 
 class TaskController extends Controller
@@ -14,8 +15,9 @@ class TaskController extends Controller
     {
 
         // Ambil parameter dari request
-        $user_id    = $request->input('user_id');
-        $date       = $request->input('date') ?: date('Y-m');
+        $user       = $request->user();
+        $user_id    = $request->input('user_id') ?? $user->id;
+        $date       = $request->input('date') ?? '';
 
         $query = Task::query();
 
@@ -24,7 +26,16 @@ class TaskController extends Controller
         }
 
         if ($date) {
-            $query->whereMonth('start', now()->month);
+
+            $date           = trim($date, '"');
+            $tgl            = Carbon::parse($date);
+            $awalTanggal    = $tgl->format('Y-m-01 00:00:00');
+            $akhirTanggal   = $tgl->format('Y-m-t 00:00:00');
+
+            $query->where(function ($query) use ($awalTanggal, $akhirTanggal) {
+                $query->whereBetween('start', [$awalTanggal, $akhirTanggal])
+                    ->orWhereBetween('end', [$awalTanggal, $akhirTanggal]);
+            });
         }
 
         $query->orderBy('start', 'asc');
