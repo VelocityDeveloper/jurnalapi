@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use App\Models\User;
 
 class UsersController extends Controller
 {
@@ -11,7 +13,11 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        //get all users
+        $users = User::paginate(20);
+        $users->withPath('/users');
+
+        return response()->json($users);
     }
 
     /**
@@ -19,7 +25,22 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'      => 'required|min:3',
+            'email'     => 'required|email|unique:users,email',
+            'password'  => ['required', 'confirmed', Rules\Password::defaults()],
+            'role'      => 'required|min:5',
+        ]);
+
+        //buat user
+        $user = User::create([
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'password'  => bcrypt($request->password),
+            'role'      => $request->role
+        ]);
+
+        return response()->json($user);
     }
 
     /**
@@ -28,6 +49,8 @@ class UsersController extends Controller
     public function show(string $id)
     {
         //
+        $user = User::find($id);
+        return response()->json($user);
     }
 
     /**
@@ -36,6 +59,22 @@ class UsersController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $request->validate([
+            'name'      => 'required|min:3',
+            'email'     => 'required|email',
+            'password'  => ['required', 'confirmed', Rules\Password::defaults()],
+            'role'      => 'required|min:5',
+        ]);
+
+        $user = User::find($id);
+        $user->update([
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'password'  => bcrypt($request->password),
+            'role'      => $request->role
+        ]);
+
+        return response()->json($user);
     }
 
     /**
@@ -43,6 +82,8 @@ class UsersController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //hapus user
+        $user = User::find($id);
+        $user->delete();
     }
 }
