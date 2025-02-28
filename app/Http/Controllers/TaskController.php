@@ -30,7 +30,7 @@ class TaskController extends Controller
             $date           = trim($date, '"');
             $tgl            = Carbon::parse($date);
             $awalTanggal    = $tgl->format('Y-m-01 00:00:00');
-            $akhirTanggal   = $tgl->format('Y-m-t 00:00:00');
+            $akhirTanggal   = $tgl->format('Y-m-t 23:59:00');
 
             $query->where(function ($query) use ($awalTanggal, $akhirTanggal) {
                 $query->whereBetween('start', [$awalTanggal, $akhirTanggal])
