@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Models\User;
 
 class UserSeeder extends Seeder
@@ -14,18 +15,35 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name'      => 'Test User',
-            'email'     => 'test@example.com',
-            'password'  => Hash::make('password'),
-            'role'      => 'admin',
+        //default admin users
+        $user = User::create([
+            'name'              => 'admin',
+            'email'             => 'admin@example.com',
+            'email_verified_at' => now(),
+            'password'          => Hash::make('password'),
+            'remember_token'    => Str::random(10),
         ]);
-        User::factory()->create([
-            'name'      => 'Admin',
-            'email'     => 'admin@example.com',
-            'password'  => Hash::make('password'),
-            'role'      => 'admin',
+        $user->assignRole('admin');
+
+        //default owner users
+        $owner = User::create([
+            'name'              => 'owner',
+            'email'             => 'owner@example.com',
+            'email_verified_at' => now(),
+            'password'          => Hash::make('password'),
+            'remember_token'    => Str::random(10),
         ]);
+        $owner->assignRole('owner');
+
+        //default users
+        $user = User::create([
+            'name'              => 'user',
+            'email'             => 'user@example.com',
+            'email_verified_at' => now(),
+            'password'          => Hash::make('password'),
+            'remember_token'    => Str::random(10),
+        ]);
+        $user->assignRole('user');
 
         //buat web developer 4
         for ($i = 1; $i <= 4; $i++) {

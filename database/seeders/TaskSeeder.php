@@ -21,7 +21,7 @@ class TaskSeeder extends Seeder
         foreach ($users as $user) {
 
             // Loop untuk membuat task dari 30 hari kebelakang sampai 30 hari kedepan
-            for ($i = -30; $i <= 30; $i++) {
+            for ($i = -90; $i <= 30; $i++) {
 
                 // Hitung tanggal 30 hari kebelakang
                 $date = Carbon::today()->addDays($i);
