@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password'          => Hash::make('password'),
             'remember_token'    => Str::random(10),
+            'role'              => 'admin',
         ]);
         $user->assignRole('admin');
 
@@ -32,6 +33,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password'          => Hash::make('password'),
             'remember_token'    => Str::random(10),
+            'role'              => 'owner',
         ]);
         $owner->assignRole('owner');
 
@@ -42,6 +44,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password'          => Hash::make('password'),
             'remember_token'    => Str::random(10),
+            'role'              => 'user',
         ]);
         $user->assignRole('user');
 

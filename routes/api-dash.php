@@ -20,6 +20,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //dashboard
     Route::get('dashboard/datatable', [DashboardController::class, 'datatable']);
+    Route::get('dashboard/welcome', [DashboardController::class, 'welcome']);
+    Route::get('dashboard/count30hari', [DashboardController::class, 'count30hari']);
+    Route::get('dashboard/count1year', [DashboardController::class, 'count1year']);
+    Route::get('dashboard/hariini', [DashboardController::class, 'hariini']);
 
     //options
     Route::get('option/{key}', [OptionsController::class, 'get']);
