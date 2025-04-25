@@ -17,7 +17,8 @@ class OptionsController extends Controller
         $users = $users->map(function ($user) {
             return [
                 'value' => $user->id,
-                'label' => $user->name
+                'label' => $user->name,
+                'avatar_url' => $user->avatar_url,
             ];
         });
 
