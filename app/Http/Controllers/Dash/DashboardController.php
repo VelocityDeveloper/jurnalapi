@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Post;
 use App\Models\Task;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -15,15 +16,27 @@ class DashboardController extends Controller
      */
     public function datatable()
     {
-        $Posts = Post::with('author:id,name,avatar')
-            ->orderBy('date', 'desc')
-            ->paginate(8);
-        return response()->json($Posts);
+        $task = Task::with('user:id,name,avatar')
+            ->orderBy('start', 'desc')
+            ->paginate(20);
+
+        return response()->json($task);
     }
 
 
     public function welcome()
     {
+
+        //get semua user
+        $users = User::all();
+        //collection user name and avatar
+        $users = $users->map(function ($user) {
+            return [
+                'name' => $user->name,
+                'avatar' => $user->avatar_url,
+            ];
+        });
+
         // Periode sebelumnya (bulan lalu)
         $previousMonth = Carbon::now()->subMonth()->month;
         $previousYear = Carbon::now()->subMonth()->year;
@@ -61,6 +74,7 @@ class DashboardController extends Controller
             'total_task' => $tasks,
             'absolute_increase' => $absoluteIncrease,
             'percentage_increase' => $percentageIncrease,
+            'users' => $users,
         ]);
     }
     public function count30hari()
